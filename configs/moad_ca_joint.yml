@@ -1,0 +1,74 @@
+run_name: 'clf_cat_j_ca_h1_v2_ep200'
+logdir: './diffusion_logs'
+wandb_params:
+  mode: 'online'  # disabled, offline, online
+  entity: 'jinis2357_snu'
+  group: 'experiment'
+dataset: 'bindingmoad'
+datadir: './processed_noH_ca/'
+enable_progress_bar: False
+num_sanity_val_steps: 0
+
+mode: 'joint'
+pocket_representation: 'CA'
+virtual_nodes: False
+batch_size: 64
+lr: 5.0e-4
+n_epochs: 200
+num_workers: 4
+gpus: 1
+clip_grad: True
+augment_rotation: False
+augment_noise: 0
+
+auxiliary_loss: False
+loss_params:
+  max_weight: 0.001
+  schedule: 'linear'
+  clamp_lj: 3.0
+
+egnn_params:
+  device: 'cuda'
+  edge_cutoff_ligand: null
+  edge_cutoff_pocket: 8.0
+  edge_cutoff_interaction: 8.0
+  reflection_equivariant: False
+  edge_embedding_dim: null
+  joint_nf: 32
+  hidden_nf: 128
+  n_layers: 5
+  attention: True
+  tanh: True
+  norm_constant: 1
+  inv_sublayers: 1
+  sin_embedding: False
+  aggregation_method: 'sum'
+  normalization_factor: 100  # used if aggregation_method='sum'
+
+diffusion_params:
+  diffusion_steps: 100
+  diffusion_noise_schedule: 'polynomial_2'  # learned, cosine
+  diffusion_noise_precision: 1.0e-5
+  diffusion_loss_type: 'l2'  # vlb, l2
+  normalize_factors: [1, 4]  # [x, h]
+
+context_params:
+  context_mode: 'concat'  # add, concat
+  context_node_nf: 8
+  ec_level: 1
+  clf_guidance: True
+  clf_grad_scale: 1.0
+  clf_file: './classifier/clf_h2_v1/checkpoint/best-model-epoch=epoch=202.ckpt'
+  cf_guidance: False
+  cf_threshold: 0.5
+  cf_strength: 1.0
+
+save_epochs: 50
+eval_epochs: 5
+visualize_sample_epoch: 100
+visualize_chain_epoch: 100
+eval_params:
+  n_eval_samples: 100
+  smiles_file: './processed_noH_ca/train_smiles.npy'
+  n_visualize_samples: 5
+  keep_frames: 100

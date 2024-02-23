@@ -1,0 +1,27 @@
+python process_bindingmoad.py . --label_ec
+
+python -u train_diffusion.py --config ./configs/moad_ca_cond.yml
+python -u train_diffusion.py --config ./configs/moad_ca_joint.yml
+
+python -u train_classifier.py --config ./configs/moad_ca_joint_clf.yml
+
+python test.py ./diffusion_logs/or_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=380.ckpt --outdir ./outputs/or_j_ca_h1_v1_ep500 --sanitize --skip_existing
+python test.py ./diffusion_logs/add_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=268.ckpt --outdir ./outputs/add_j_ca_h1_v1_ep500 --sanitize --skip_existing
+python test.py ./diffusion_logs/cat_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=219.ckpt --outdir ./outputs/cat_j_ca_h1_v1_ep500 --sanitize --skip_existing
+python test.py ./diffusion_logs/cf_add_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=322.ckpt --outdir ./outputs/cf_add_j_ca_h1_v1_ep500 --sanitize --skip_existing
+python test.py ./diffusion_logs/cf_cat_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=275.ckpt --outdir ./outputs/cf_cat_j_ca_h1_v1_ep500 --sanitize --skip_existing
+python test.py ./diffusion_logs/clf_add_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=235.ckpt --outdir ./outputs/clf_add_j_ca_h1_v1_ep500 --sanitize --skip_existing
+python test.py ./diffusion_logs/clf_cat_j_ca_h1_v1_ep500/checkpoint/best-model-epoch=491.ckpt --outdir ./outputs/clf_cat_j_ca_h1_v1_ep500 --sanitize --skip_existing
+
+python analysis/docking_py27.py ./processed_noH_full/test/ ./processed_noH_full/pdbqt/ bindingmoad
+
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./processed_noH_ca/test --out_dir ./processed_noH_ca/test_qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/or_j_ca_h1_v1_ep500/generated --out_dir ./outputs/or_j_ca_h1_v1_ep500/qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/add_j_ca_h1_v1_ep500/generated --out_dir ./outputs/add_j_ca_h1_v1_ep500/qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/cat_j_ca_h1_v1_ep500/generated --out_dir ./outputs/cat_j_ca_h1_v1_ep500/qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/cf_add_j_ca_h1_v1_ep500/generated --out_dir ./outputs/cf_add_j_ca_h1_v1_ep500/qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/cf_cat_j_ca_h1_v1_ep500/generated --out_dir ./outputs/cf_cat_j_ca_h1_v1_ep500/qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/clf_add_j_ca_h1_v1_ep500/generated --out_dir ./outputs/clf_add_j_ca_h1_v1_ep500/qvina 
+python analysis/docking.py --pdbqt_dir ./processed_noH_full/pdbqt/ --sdf_dir ./outputs/clf_cat_j_ca_h1_v1_ep500/generated --out_dir ./outputs/clf_cat_j_ca_h1_v1_ep500/qvina 
+
+

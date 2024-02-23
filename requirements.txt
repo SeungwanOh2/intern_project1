@@ -1,0 +1,13 @@
+conda create -n diffsbdd python=3.10
+conda install pytorch==1.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
+conda install -c conda-forge pytorch-lightning
+conda install -c pyg pytorch-scatter
+conda install -c conda-forge wandb
+conda install -c conda-forge rdkit
+conda install -c conda-forge biopython
+conda install -c conda-forge imageio
+conda install -c anaconda scipy
+conda install -c conda-forge openbabel
+conda install networkx
+conda install matplotlib
+conda install seaborn

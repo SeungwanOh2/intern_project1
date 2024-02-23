@@ -1,0 +1,39 @@
+run_name: 'clf_h2_v2'
+logdir: './classifier'
+wandb_params:
+  mode: 'online'  # disabled, offline, online
+  entity: 'jinis2357_snu'
+  group: 'classifiers'
+dataset: 'bindingmoad'
+datadir: './processed_noH_ca/'
+enable_progress_bar: True
+num_sanity_val_steps: 0
+diffusion: './diffusion_logs/or_j_ca_h1_v1_ep500/checkpoint/last.ckpt'
+
+pocket_representation: 'CA'
+batch_size: 64
+lr: 1.0e-3
+weight_decay: 1.0e-4
+n_epochs: 1000
+max_patience: 50
+num_workers: 4
+ec_level: 1
+gpus: 1
+label_hist: './processed_noH_ca/label_hist.pickle'
+noise_train: 'random'  # null, 'random' or any float from 0.0 to 1.0
+noise_eval: 0.5  # null, 'random' or any float from 0.0 to 1.0
+
+clf_params:
+  device: 'cuda'
+  hidden_nf: 128
+  n_fc: 3
+  n_layers: 5
+  attention: True
+  tanh: True
+  norm_constant: 1
+  inv_sublayers: 1
+  sin_embedding: False 
+  aggregation_method: 'sum'
+  normalization_factor: 100  # used if aggregation_method='sum' 
+  reflection_equivariant: False
+  edge_cutoff_pocket: 8.0
