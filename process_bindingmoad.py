@@ -527,8 +527,11 @@ if __name__ == '__main__':
         _ = split_by_ec_number(filtered_examples, protein_ec_dict, num_val=num_val, num_test=num_test)
 
     else:
-        with open(ec_dict_path, 'rb') as f:
-            protein_ec_dict = pickle.load(f)
+        if ec_dict_path.exists():
+            with open(ec_dict_path, 'rb') as f:
+                protein_ec_dict = pickle.load(f)
+        else:
+            protein_ec_dict = get_protein_ec_dict(filtered_examples, ec_dict_path)
                 
     # Use predefined data split
     data_split = {}
